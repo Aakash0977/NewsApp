@@ -4,11 +4,11 @@ import React, { Component } from 'react'
 export class Loading extends Component {
   render() {
     return (
-        <div className="d-flex justify-content-center">
-        <div className="spinner-border" role="status">
-          <span className="sr-only"></span>
-        </div>
+      <div class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
       </div>
+    </div>
     )
   }
 }
