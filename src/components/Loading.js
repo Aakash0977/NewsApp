@@ -1,8 +1,6 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-
-export class Loading extends Component {
-  render() {
+const Loading = () => {
     return (
       <div className="text-center">
       <div className="spinner-border" role="status">
@@ -10,7 +8,6 @@ export class Loading extends Component {
       </div>
     </div>
     )
-  }
 }
 
 export default Loading

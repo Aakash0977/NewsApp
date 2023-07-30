@@ -1,41 +1,24 @@
-import React, { Component } from 'react'
-// import Loading from './Loading';
+import React, {useEffect, useState} from 'react'
+import Loading from './Loading';
 import NewsItems from './NewsItems'
 import PropTypes from 'prop-types'
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-export class News extends Component {
-  url = ""
-  static defaultProps = {
-    country: 'in',
-    pageSize: 7,
-    category: "general",
-  }
+const News = (props) =>{
 
-  static propTypes = {
-    country: PropTypes.string,
-    pageSize: PropTypes.number,
-    category: PropTypes.string,
-  }
+  const [articles, setarticles] = useState([])
+  const [loading, setloading] = useState(true)
+  const [page, setpage] = useState(1)
+  const [totalResults, settotalResults] = useState(0)
+  // document.title = `${this.capitalizeFirstLetter(props.category)} - NewsSky`;
 
   capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      articles: [],
-      loading: true,
-      page: 1,
-      totalResults: 0
-    }
-    document.title = `${this.capitalizeFirstLetter(this.props.category)} - NewsSky`;
-  }
-
-  async updateNews(pageNo) {
-    this.props.setProgress(10);
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pagesize=${this.props.pageSize}`;
+  const  updateNews = async (pageNo) => {
+    props.setProgress(10);
+    let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${this.state.page}&pagesize=${props.pageSize}`;
     this.setState({ loading: true })
     let data = await fetch(url);
     let parseData = await data.json()
@@ -46,7 +29,7 @@ export class News extends Component {
       loading: false,
       page: 2
     })
-    this.props.setProgress(100);
+    props.setProgress(100);
   }
 
   async componentDidMount() {
@@ -55,7 +38,7 @@ export class News extends Component {
 
   fetchMoreData = async () => {
     this.setState({ page: this.state.page + 1 });
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pagesize=${this.props.pageSize}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${this.state.page}&pagesize=${props.pageSize}`;
     let data = await fetch(url);
     let parseData = await data.json()
     this.setState({
@@ -69,17 +52,17 @@ export class News extends Component {
   render() {
     return (
       <>
-        <h1 className="d-flex justify-content-center" style={{ margin: '60px 35px 0 0' }}>Top Headlines on {this.capitalizeFirstLetter(this.props.category)}</h1>
-        {/* {this.state.loading && <Loading />} */}
+        <h1 className="d-flex justify-content-center" style={{ margin: '85px 0 40px' }}>Top Headlines on {this.capitalizeFirstLetter(props.category)}</h1>
+        {this.state.loading && <Loading />}
         <InfiniteScroll
           dataLength={this.state.articles.length}
           next={this.fetchMoreData}
           hasMore={this.state.articles.length !== this.state.totalResults}
-          loader={<h1 style={{ textAlign: "center" }}>Loading...</h1>}
-          endMessage={
+          loader={<h1 style={{ textAlign: "center", margin: '30px 0'}}><Loading /></h1>}
+          endMessage={this.state.totalResults ?
             <p style={{ textAlign: "center" }}>
               <b>Yay! You have seen it all</b>
-            </p>
+            </p> : ""
           }
         >
          <div className='container'>
@@ -97,6 +80,18 @@ export class News extends Component {
       </>
     )
   }
+}
+
+News.defaultProps = {
+  country: 'in',
+  pageSize: 7,
+  category: "general",
+}
+
+News.propTypes = {
+  country: PropTypes.string,
+  pageSize: PropTypes.number,
+  category: PropTypes.string,
 }
 
 export default News
