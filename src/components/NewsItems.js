@@ -7,8 +7,8 @@ export class NewsItems extends Component {
   
     return (    
       <div>
-          <div className="card" style={{width: "18rem", height:'38rem'}}>
-          <span className="position-absolute top-0 translate-middle badge rounded-pill bg-secondary" style={{left:'50%', zIndex:'1'}}>
+          <div className="card" >
+          <span className="position-absolute top-0 translate-middle badge rounded-pill bg-danger" style={{left:'50%', zIndex:'1'}}>
             {source}</span>
           <img src={!imgUrl?this.noImg: imgUrl} style={{width: '100%', height: 'auto'}} className="card-img-top" alt="..."/>
           <div className="card-body">
